@@ -1,13 +1,10 @@
 ﻿#region using
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
+using NLua;
 #endregion
 
 
@@ -16,6 +13,13 @@ namespace Pacman_Atari
     class Pacman : Object
     {
         private KeyboardState currentKeyBoardState;
+        /// <summary>
+        /// LEFT = 0
+        /// UP = 1
+        /// RIGHT = 2
+        /// DOWN = 3
+        /// </summary>
+        private int directionSelected = -1;
         private Animation walkAnimation;
         private int distance = 1;
         private int size = 15;
@@ -25,6 +29,8 @@ namespace Pacman_Atari
         private Rectangle pacmanCollider;
         private Enum.Direction dir;
         private Enum.Direction nextDir;
+
+        Lua lua;
 
         public Pacman(Vector2 position, float speed, String textureName, String debugTextureName)
         {
@@ -51,6 +57,13 @@ namespace Pacman_Atari
             walkAnimation.Inatialize(texture, position, 14, 14, 4, 200, Color.White, scale, true, 0);
 
             center = new Vector2(walkAnimation.frameWidth / 2, walkAnimation.frameHeight / 2);
+
+            lua = new Lua();
+            lua.RegisterFunction("Update", this, GetType().GetMethod("Update"));
+            lua.RegisterFunction("Left", this, GetType().GetMethod("GoLeft"));
+            lua.RegisterFunction("Up", this, GetType().GetMethod("GoUp"));
+            lua.RegisterFunction("Right", this, GetType().GetMethod("GoRight"));
+            lua.RegisterFunction("Down", this, GetType().GetMethod("GoDown"));
         }
 
         public override void Update(GameTime gameTime)
@@ -58,11 +71,21 @@ namespace Pacman_Atari
             if (!isAlive)
                 return;
 
+            try
+            {
+                lua.DoFile("pacman.lua");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERRO: " + e.Message);
+            }
+
             currentKeyBoardState = Keyboard.GetState();
+
             newPos = position - diff;
 
             #region movement
-            if (currentKeyBoardState.IsKeyDown(Keys.Up))
+            if (directionSelected == 1 || currentKeyBoardState.IsKeyDown(Keys.Up))
             {
                 colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
                 if (!CheckCollision())
@@ -70,7 +93,7 @@ namespace Pacman_Atari
                 else
                     nextDir = Enum.Direction.up;
             }
-            else if (currentKeyBoardState.IsKeyDown(Keys.Down))
+            else if (directionSelected == 3 || currentKeyBoardState.IsKeyDown(Keys.Down))
             {
                 colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
                 if (!CheckCollision())
@@ -78,7 +101,7 @@ namespace Pacman_Atari
                 else
                     nextDir = Enum.Direction.down;
             }
-            else if (currentKeyBoardState.IsKeyDown(Keys.Right))
+            else if (directionSelected == 2 || currentKeyBoardState.IsKeyDown(Keys.Right))
             {
                 colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
                 if (!CheckCollision())
@@ -86,7 +109,7 @@ namespace Pacman_Atari
                 else
                     nextDir = Enum.Direction.right;
             }
-            else if (currentKeyBoardState.IsKeyDown(Keys.Left))
+            else if (directionSelected == 0 || currentKeyBoardState.IsKeyDown(Keys.Left))
             {
                 colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
                 if (!CheckCollision())
@@ -120,11 +143,11 @@ namespace Pacman_Atari
                     if (!CheckCollision())
                         position.X -= speed;
                     break;
-            } 
+            }
             #endregion
 
             if (position.Y < 0)
-                position = new Vector2(((int)Game1.screenWidth / 2) + 7, (int)Game1.screenHeight-20);
+                position = new Vector2(((int)Game1.screenWidth / 2) + 7, (int)Game1.screenHeight - 20);
 
             if (position.Y > Game1.screenHeight - 20)
                 position = new Vector2(((int)Game1.screenWidth / 2) + 7, 0);
@@ -183,6 +206,26 @@ namespace Pacman_Atari
                 }
             }
             return false;
+        }
+
+        public void GoLeft()
+        {
+            directionSelected = 0;
+        }
+
+        public void GoUp()
+        {
+            directionSelected = 1;
+        }
+
+        public void GoRight()
+        {
+            directionSelected = 2;
+        }
+
+        public void GoDown()
+        {
+            directionSelected = 3;
         }
     }
 }
