@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 #endregion
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
     class ObjectStatic
     {
@@ -22,7 +22,7 @@ namespace Pacman_Atari
 
         public Rectangle rectangle;
 
-        public Enum.ObjectType type;
+        public GlobalEnums.ObjectType type;
 
         protected Vector2 scale;
 

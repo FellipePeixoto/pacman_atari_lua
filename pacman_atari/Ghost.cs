@@ -10,9 +10,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 #endregion
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
-    class Ghost : Object
+    class Ghost : Moveable
     {
         private Animation animation;
 
@@ -24,6 +24,9 @@ namespace Pacman_Atari
             this.isAlive = true;
 
             this.scale = 1;
+
+            dir = GlobalEnums.Direction.stopped;
+            nextDir = GlobalEnums.Direction.stopped;
 
             animation = new Animation();
         }
@@ -40,6 +43,8 @@ namespace Pacman_Atari
         {
             if (!isAlive)
                 return;
+
+            Move();
 
             animation.position = position;
             animation.Update(gameTime);

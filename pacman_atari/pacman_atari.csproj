@@ -48,6 +48,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Ghost.cs" />
     <Compile Include="Items.cs" />
+    <Compile Include="Moveable.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="ObjectStatic.cs" />
     <Compile Include="Pacman.cs" />

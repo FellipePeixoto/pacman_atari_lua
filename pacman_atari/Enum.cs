@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
-    class Enum
+    class GlobalEnums
     {
         public enum Direction
         {

@@ -8,9 +8,14 @@ using NLua;
 #endregion
 
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
-    class Pacman : Object
+    public enum sensor_states
+    {
+        enemy,free,wall
+    }
+
+    class Pacman : Moveable
     {
         private KeyboardState currentKeyBoardState;
         /// <summary>
@@ -19,18 +24,16 @@ namespace Pacman_Atari
         /// RIGHT = 2
         /// DOWN = 3
         /// </summary>
-        private int directionSelected = -1;
         private Animation walkAnimation;
-        private int distance = 1;
-        private int size = 15;
-        private Vector2 newPos;
+        
         private Vector2 diff = new Vector2(15, 15);
         public static int score = 0;
-        private Rectangle pacmanCollider;
-        private Enum.Direction dir;
-        private Enum.Direction nextDir;
 
-        Lua lua;
+        //Implementar os sensores por distancia
+        sensor_states leftSensor;
+        sensor_states topSensor;
+        sensor_states rightSensor;
+        sensor_states bottomSensor;
 
         public Pacman(Vector2 position, float speed, String textureName, String debugTextureName)
         {
@@ -42,8 +45,8 @@ namespace Pacman_Atari
 
             this.isAlive = true;
 
-            dir = Enum.Direction.stopped;
-            nextDir = Enum.Direction.stopped;
+            dir = GlobalEnums.Direction.stopped;
+            nextDir = GlobalEnums.Direction.stopped;
 
             walkAnimation = new Animation();
 
@@ -57,13 +60,6 @@ namespace Pacman_Atari
             walkAnimation.Inatialize(texture, position, 14, 14, 4, 200, Color.White, scale, true, 0);
 
             center = new Vector2(walkAnimation.frameWidth / 2, walkAnimation.frameHeight / 2);
-
-            lua = new Lua();
-            lua.RegisterFunction("Update", this, GetType().GetMethod("Update"));
-            lua.RegisterFunction("Left", this, GetType().GetMethod("GoLeft"));
-            lua.RegisterFunction("Up", this, GetType().GetMethod("GoUp"));
-            lua.RegisterFunction("Right", this, GetType().GetMethod("GoRight"));
-            lua.RegisterFunction("Down", this, GetType().GetMethod("GoDown"));
         }
 
         public override void Update(GameTime gameTime)
@@ -71,80 +67,46 @@ namespace Pacman_Atari
             if (!isAlive)
                 return;
 
-            try
-            {
-                lua.DoFile("pacman.lua");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("ERRO: " + e.Message);
-            }
-
             currentKeyBoardState = Keyboard.GetState();
 
             newPos = position - diff;
 
             #region movement
-            if (directionSelected == 1 || currentKeyBoardState.IsKeyDown(Keys.Up))
+            if (currentKeyBoardState.IsKeyDown(Keys.Up))
             {
                 colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
                 if (!CheckCollision())
-                    dir = Enum.Direction.up;
+                    dir = GlobalEnums.Direction.up;
                 else
-                    nextDir = Enum.Direction.up;
+                    nextDir = GlobalEnums.Direction.up;
             }
-            else if (directionSelected == 3 || currentKeyBoardState.IsKeyDown(Keys.Down))
+            else if (currentKeyBoardState.IsKeyDown(Keys.Down))
             {
                 colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
                 if (!CheckCollision())
-                    dir = Enum.Direction.down;
+                    dir = GlobalEnums.Direction.down;
                 else
-                    nextDir = Enum.Direction.down;
+                    nextDir = GlobalEnums.Direction.down;
             }
-            else if (directionSelected == 2 || currentKeyBoardState.IsKeyDown(Keys.Right))
+            else if (currentKeyBoardState.IsKeyDown(Keys.Right))
             {
                 colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
                 if (!CheckCollision())
-                    dir = Enum.Direction.right;
+                    dir = GlobalEnums.Direction.right;
                 else
-                    nextDir = Enum.Direction.right;
+                    nextDir = GlobalEnums.Direction.right;
             }
-            else if (directionSelected == 0 || currentKeyBoardState.IsKeyDown(Keys.Left))
+            else if (currentKeyBoardState.IsKeyDown(Keys.Left))
             {
                 colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
                 if (!CheckCollision())
-                    dir = Enum.Direction.left;
+                    dir = GlobalEnums.Direction.left;
                 else
-                    nextDir = Enum.Direction.left;
-            }
-
-            switch (dir)
-            {
-                case Enum.Direction.up:
-                    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
-                    if (!CheckCollision())
-                        position.Y -= speed;
-                    break;
-
-                case Enum.Direction.right:
-                    colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
-                    if (!CheckCollision())
-                        position.X += speed;
-                    break;
-
-                case Enum.Direction.down:
-                    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
-                    if (!CheckCollision())
-                        position.Y += speed;
-                    break;
-
-                case Enum.Direction.left:
-                    colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
-                    if (!CheckCollision())
-                        position.X -= speed;
-                    break;
+                    nextDir = GlobalEnums.Direction.left;
             }
             #endregion
+
+            Move();
 
             if (position.Y < 0)
                 position = new Vector2(((int)Game1.screenWidth / 2) + 7, (int)Game1.screenHeight - 20);
@@ -155,11 +117,11 @@ namespace Pacman_Atari
             walkAnimation.position = position;
             walkAnimation.Update(gameTime);
 
-            pacmanCollider = new Rectangle((int)newPos.X + 4, (int)newPos.Y + 4, 7, 7);
+            collider = new Rectangle((int)newPos.X + 4, (int)newPos.Y + 4, 7, 7);
 
-            if (CheckCollision(Enum.ObjectType.dot, true))
+            if (CheckCollision(GlobalEnums.ObjectType.dot, true))
                 score++;
-            if (CheckCollision(Enum.ObjectType.pill, true))
+            if (CheckCollision(GlobalEnums.ObjectType.pill, true))
                 score += 5;
 
             base.Update(gameTime);
@@ -171,61 +133,6 @@ namespace Pacman_Atari
             {
                 walkAnimation.Draw(spriteBatch, center, true);
             }
-        }
-
-        /// <summary>
-        /// Checa a colisão contra objeto solido
-        /// </summary>
-        /// <returns></returns>
-        private bool CheckCollision()
-        {
-            foreach (ObjectStatic i in Items.objMovList)
-            {
-                if (i != null && colliderDetection.Intersects(i.rectangle) &&
-                    (i.type == Enum.ObjectType.block || i.type == Enum.ObjectType.ghost))
-                    return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Checar colisão contra objeto especifico
-        /// </summary>
-        /// <param name="type">Enumerador dos tipos de entidades no mapa</param>
-        /// <returns>Verdadeiro caso o há colisão</returns>
-        private bool CheckCollision(Enum.ObjectType type, bool destroy)
-        {
-            foreach (ObjectStatic i in Items.objMovList)
-            {
-                if (i != null && pacmanCollider.Intersects(i.rectangle) &&
-                    (i.type == type))
-                {
-                    if (destroy)
-                        Items.objMovList[Items.objMovList.IndexOf(i)] = null;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public void GoLeft()
-        {
-            directionSelected = 0;
-        }
-
-        public void GoUp()
-        {
-            directionSelected = 1;
-        }
-
-        public void GoRight()
-        {
-            directionSelected = 2;
-        }
-
-        public void GoDown()
-        {
-            directionSelected = 3;
         }
     }
 }

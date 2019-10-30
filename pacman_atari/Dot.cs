@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 #endregion
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
     class Dot:ObjectStatic
     {
@@ -20,7 +20,7 @@ namespace Pacman_Atari
             this.textureName = textureName;
             this.color = color;
 
-            type = Enum.ObjectType.dot;
+            type = GlobalEnums.ObjectType.dot;
             this.scale = new Vector2(8, 2);
             rectangle = new Rectangle((int)position.X, (int)position.Y, (int)scale.X, (int)scale.Y);
         }

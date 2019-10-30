@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NLua;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -10,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media; 
 #endregion
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
     /// <summary>
     /// This is the main type for your game
@@ -19,7 +20,10 @@ namespace Pacman_Atari
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public static Game1 instance;
+
         private Vector2 scoreShow;
+        public int ghostsPursuing;
 
         public static readonly int screenWidth = 320;
         public static readonly int screenHeight = 164 + 30;
@@ -28,12 +32,25 @@ namespace Pacman_Atari
 
         Color bgColor = new Color(45, 50, 184);
 
+        Lua luaPacman;
+        Lua luaGhostGreen;
+        Lua luaGhostLemonade;
+        Lua luaGhostWhiteGreen;
+        Lua luaGhostYellow;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            instance = this;
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
+
+            luaPacman = new Lua();
+            luaGhostGreen = new Lua();
+            luaGhostLemonade = new Lua();
+            luaGhostWhiteGreen = new Lua();
+            luaGhostYellow = new Lua();
 
             scoreShow = new Vector2(screenWidth - 100, screenHeight - 27);
         }
@@ -49,6 +66,32 @@ namespace Pacman_Atari
             // TODO: Add your initialization logic here
 
             Items.Initialize();
+
+            luaPacman.RegisterFunction("Left", Items.pacman, Items.pacman.GetType().GetMethod("Left"));
+            luaPacman.RegisterFunction("Up", Items.pacman, Items.pacman.GetType().GetMethod("Up"));
+            luaPacman.RegisterFunction("Right", Items.pacman, Items.pacman.GetType().GetMethod("Right"));
+            luaPacman.RegisterFunction("Down", Items.pacman, Items.pacman.GetType().GetMethod("Down"));
+
+            luaGhostGreen.RegisterFunction("Left", Items.ghostGreen, Items.ghostGreen.GetType().GetMethod("Left"));
+            luaGhostGreen.RegisterFunction("Up", Items.ghostGreen, Items.ghostGreen.GetType().GetMethod("Up"));
+            luaGhostGreen.RegisterFunction("Right", Items.ghostGreen, Items.ghostGreen.GetType().GetMethod("Right"));
+            luaGhostGreen.RegisterFunction("Down", Items.ghostGreen, Items.ghostGreen.GetType().GetMethod("Down"));
+
+            luaGhostLemonade.RegisterFunction("Left", Items.ghostLemonade, Items.ghostLemonade.GetType().GetMethod("Left"));
+            luaGhostLemonade.RegisterFunction("Up", Items.ghostLemonade, Items.ghostLemonade.GetType().GetMethod("Up"));
+            luaGhostLemonade.RegisterFunction("Right", Items.ghostLemonade, Items.ghostLemonade.GetType().GetMethod("Right"));
+            luaGhostLemonade.RegisterFunction("Down", Items.ghostLemonade, Items.ghostLemonade.GetType().GetMethod("Down"));
+
+            luaGhostWhiteGreen.RegisterFunction("Left", Items.ghostWhiteGreen, Items.ghostWhiteGreen.GetType().GetMethod("Left"));
+            luaGhostWhiteGreen.RegisterFunction("Up", Items.ghostWhiteGreen, Items.ghostWhiteGreen.GetType().GetMethod("Up"));
+            luaGhostWhiteGreen.RegisterFunction("Right", Items.ghostWhiteGreen, Items.ghostWhiteGreen.GetType().GetMethod("Right"));
+            luaGhostWhiteGreen.RegisterFunction("Down", Items.ghostWhiteGreen, Items.ghostWhiteGreen.GetType().GetMethod("Down"));
+
+            luaGhostYellow.RegisterFunction("Left", Items.ghostYellow, Items.ghostYellow.GetType().GetMethod("Left"));
+            luaGhostYellow.RegisterFunction("Up", Items.ghostYellow, Items.ghostYellow.GetType().GetMethod("Up"));
+            luaGhostYellow.RegisterFunction("Right", Items.ghostYellow, Items.ghostYellow.GetType().GetMethod("Right"));
+            luaGhostYellow.RegisterFunction("Down", Items.ghostYellow, Items.ghostYellow.GetType().GetMethod("Down"));
+
             base.Initialize();
         }
 
@@ -93,6 +136,29 @@ namespace Pacman_Atari
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
+
+            try
+            {
+                luaPacman["ghostsPursuing"] = ghostsPursuing;
+                luaPacman.DoFile("pacman.lua");
+
+                luaGhostGreen["pacmanPosition"] = Items.pacman.position;
+                luaGhostGreen["isAlive"] = Items.ghostGreen.IsAlive();
+                luaGhostGreen.DoFile("ghost-green.lua");
+
+                luaGhostLemonade["pacmanPosition"] = Items.pacman.position;
+                luaGhostLemonade["isAlive"] = Items.ghostLemonade.IsAlive();
+                luaGhostLemonade.DoFile("ghost-lemonade.lua");
+
+                luaGhostWhiteGreen["pacmanPosition"] = Items.pacman.position;
+                luaGhostWhiteGreen["isAlive"] = Items.ghostWhiteGreen.IsAlive();
+                luaGhostWhiteGreen.DoFile("ghost-white_green.lua");
+
+                luaGhostYellow["pacmanPosition"] = Items.pacman.position;
+                luaGhostYellow["isAlive"] = Items.ghostYellow.IsAlive();
+                luaGhostYellow.DoFile("ghost-yellow.lua");
+            }
+            catch (Exception e) { }
 
             foreach (Object i in Items.objList)
             {

@@ -1,4 +1,4 @@
-﻿using Pacman_Atari;
+﻿using pacman_atari;
 using System;
 
 namespace pacman_atari

@@ -10,15 +10,16 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 #endregion
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
     class Object
     {
+
         protected Texture2D texture;
 
         protected String textureName;
 
-        protected Vector2 position;
+        public Vector2 position;
 
         protected float scale;
 
@@ -51,6 +52,11 @@ namespace Pacman_Atari
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, Color.White);
+        }
+
+        public bool IsAlive()
+        {
+            return isAlive;
         }
         #endregion
     }

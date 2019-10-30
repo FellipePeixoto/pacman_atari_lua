@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 #endregion
 
-namespace Pacman_Atari
+namespace pacman_atari
 {
     class Items
     {
@@ -159,9 +159,13 @@ namespace Pacman_Atari
             startPosGhost += trueStart;
             pacman = new Pacman(startPosPacman, 1, "pacman_animation", "debug");
             ghostGreen = new Ghost(startPosGhost, 1, "ghost_green_animation");
+            Game1.instance.ghostsPursuing++;
             ghostLemonade = new Ghost(startPosGhost, 1, "ghost_lemonade_animation");
+            Game1.instance.ghostsPursuing++;
             ghostWhiteGreen = new Ghost(startPosGhost, 1, "ghost_white-green_animation");
+            Game1.instance.ghostsPursuing++;
             ghostYellow = new Ghost(startPosGhost, 1, "ghost_yellow_animation");
+            Game1.instance.ghostsPursuing++;
             objList.Add(pacman);
             objList.Add(ghostGreen);
             objList.Add(ghostLemonade);
