@@ -14,46 +14,37 @@ namespace pacman_atari
         protected int directionSelected = -1;
         protected Vector2 newPos;
         protected GlobalEnums.Direction dir;
-        protected GlobalEnums.Direction nextDir;
-        protected int distance = 1;
+        protected readonly int distance = 1;
         protected int size = 15;
         protected Rectangle collider;
         protected SpriteEffects spriteEffects;
 
         public void Move()
         {
-            if (directionSelected == 1)
-            {
-                colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
-                if (!CheckCollision())
-                    dir = GlobalEnums.Direction.up;
-                else
-                    nextDir = GlobalEnums.Direction.up;
-            }
-            else if (directionSelected == 3)
-            {
-                colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
-                if (!CheckCollision())
-                    dir = GlobalEnums.Direction.down;
-                else
-                    nextDir = GlobalEnums.Direction.down;
-            }
-            else if (directionSelected == 2)
-            {
-                colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
-                if (!CheckCollision())
-                    dir = GlobalEnums.Direction.right;
-                else
-                    nextDir = GlobalEnums.Direction.right;
-            }
-            else if (directionSelected == 0)
-            {
-                colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
-                if (!CheckCollision())
-                    dir = GlobalEnums.Direction.left;
-                else
-                    nextDir = GlobalEnums.Direction.left;
-            }
+            //if (directionSelected == 1)
+            //{
+            //    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
+            //    if (!CheckCollision())
+            //        dir = GlobalEnums.Direction.up;
+            //}
+            //else if (directionSelected == 3)
+            //{
+            //    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
+            //    if (!CheckCollision())
+            //        dir = GlobalEnums.Direction.down;
+            //}
+            //else if (directionSelected == 2)
+            //{
+            //    colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
+            //    if (!CheckCollision())
+            //        dir = GlobalEnums.Direction.right;
+            //}
+            //else if (directionSelected == 0)
+            //{
+            //    colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
+            //    if (!CheckCollision())
+            //        dir = GlobalEnums.Direction.left;
+            //}
 
             switch (dir)
             {

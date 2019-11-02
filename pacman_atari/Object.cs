@@ -14,34 +14,24 @@ namespace pacman_atari
 {
     class Object
     {
-
-        protected Texture2D texture;
-
-        protected String textureName;
-
         public Vector2 position;
-
-        protected float scale;
-
-        protected Vector2 center;
-
-        protected float speed;
-
-        protected Rectangle colliderDetection;
-
-        protected bool isAlive = false;
-
-        protected String debugTextureName = String.Empty;
-
+        protected Texture2D texture;
         protected Texture2D debugTexture;
+        protected Rectangle colliderDetection;
+        protected Vector2 center;
+        protected string debugTextureName;
+        protected string textureName;
+        protected float scale;
+        protected float speed;
+        protected bool isAlive;
 
         #region XNA framework methods
         public virtual void LoadContent(ContentManager content)
         {
             // load da textura
             this.texture = content.Load<Texture2D>(textureName);
-            if (debugTextureName != String.Empty)
-                this.debugTexture = content.Load<Texture2D>(debugTextureName);
+            if (debugTextureName != string.Empty)
+                debugTexture = content.Load<Texture2D>(debugTextureName);
         }
 
         public virtual void Update(GameTime gameTime)

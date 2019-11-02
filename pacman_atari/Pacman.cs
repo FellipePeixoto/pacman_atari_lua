@@ -46,7 +46,6 @@ namespace pacman_atari
             this.isAlive = true;
 
             dir = GlobalEnums.Direction.stopped;
-            nextDir = GlobalEnums.Direction.stopped;
 
             walkAnimation = new Animation();
 
@@ -79,32 +78,24 @@ namespace pacman_atari
                 colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
                 if (!CheckCollision())
                     dir = GlobalEnums.Direction.up;
-                else
-                    nextDir = GlobalEnums.Direction.up;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Down))
             {
                 colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
                 if (!CheckCollision())
                     dir = GlobalEnums.Direction.down;
-                else
-                    nextDir = GlobalEnums.Direction.down;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Right))
             {
                 colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
                 if (!CheckCollision())
                     dir = GlobalEnums.Direction.right;
-                else
-                    nextDir = GlobalEnums.Direction.right;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Left))
             {
                 colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
                 if (!CheckCollision())
                     dir = GlobalEnums.Direction.left;
-                else
-                    nextDir = GlobalEnums.Direction.left;
             }
             #endregion
 

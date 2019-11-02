@@ -21,12 +21,13 @@ namespace pacman_atari
             this.position = position;
             this.speed = speed;
             this.textureName = textureName;
-            this.isAlive = true;
+            isAlive = true;
 
-            this.scale = 1;
+            debugTextureName = string.Empty;
+
+            scale = 1;
 
             dir = GlobalEnums.Direction.stopped;
-            nextDir = GlobalEnums.Direction.stopped;
 
             spriteEffects = SpriteEffects.None;
 
