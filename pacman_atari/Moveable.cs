@@ -13,7 +13,7 @@ namespace pacman_atari
     {
         protected int directionSelected = -1;
         protected Vector2 newPos;
-        protected GlobalEnums.Direction dir;
+        protected GlobalEnums.Direction actualDirection;
         protected readonly int distance = 1;
         protected int size = 15;
         protected Rectangle collider;
@@ -21,28 +21,27 @@ namespace pacman_atari
 
         public void Move()
         {
-            //if (directionSelected == 1)
-            //{
-            //    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance)))
-            //        dir = GlobalEnums.Direction.up;
-            //}
-            //else if (directionSelected == 3)
-            //{
-            //    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance)))
-            //        dir = GlobalEnums.Direction.down;
-            //}
-            //else if (directionSelected == 2)
-            //{
-            //    if (!CheckCollision(new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size)))
-            //        dir = GlobalEnums.Direction.right;
-            //}
-            //else if (directionSelected == 0)
-            //{
-            //    if (!CheckCollision(new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size)))
-            //        dir = GlobalEnums.Direction.left;
-            //}
+            switch (directionSelected)
+            {
+                case 0:
+                    if (!CheckCollision(new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size)))
+                        actualDirection = GlobalEnums.Direction.left;
+                    break;
+                case 1:
+                    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance)))
+                        actualDirection = GlobalEnums.Direction.up;
+                    break;
+                case 2:
+                    if (!CheckCollision(new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size)))
+                        actualDirection = GlobalEnums.Direction.right;
+                    break;
+                case 3:
+                    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance)))
+                        actualDirection = GlobalEnums.Direction.down;
+                    break;
+            }
 
-            switch (dir)
+            switch (actualDirection)
             {
                 case GlobalEnums.Direction.up:
                     if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance)))

@@ -45,7 +45,7 @@ namespace pacman_atari
 
             this.isAlive = true;
 
-            dir = GlobalEnums.Direction.stopped;
+            actualDirection = GlobalEnums.Direction.stopped;
 
             walkAnimation = new Animation();
 
@@ -72,24 +72,22 @@ namespace pacman_atari
 
             newPos = position - diff;
 
-            #region movement
             if (currentKeyBoardState.IsKeyDown(Keys.Up))
             {
-                dir = GlobalEnums.Direction.up;
+                directionSelected = 1;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Down))
             {
-                dir = GlobalEnums.Direction.down;
+                directionSelected = 3;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Right))
             {
-                dir = GlobalEnums.Direction.right;
+                directionSelected = 2;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Left))
             {
-                dir = GlobalEnums.Direction.left;
+                directionSelected = 0;
             }
-            #endregion
 
             Move();
 

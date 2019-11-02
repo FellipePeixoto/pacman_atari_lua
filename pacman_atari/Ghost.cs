@@ -27,7 +27,7 @@ namespace pacman_atari
 
             scale = 1;
 
-            dir = GlobalEnums.Direction.stopped;
+            actualDirection = GlobalEnums.Direction.stopped;
 
             spriteEffects = SpriteEffects.None;
 
