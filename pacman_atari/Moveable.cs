@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using pacman_atari;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace pacman_atari
         protected int distance = 1;
         protected int size = 15;
         protected Rectangle collider;
+        protected SpriteEffects spriteEffects;
 
         public void Move()
         {
@@ -64,7 +66,10 @@ namespace pacman_atari
                 case GlobalEnums.Direction.right:
                     colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
                     if (!CheckCollision())
+                    {
+                        spriteEffects = SpriteEffects.None;
                         position.X += speed;
+                    }
                     break;
 
                 case GlobalEnums.Direction.down:
@@ -76,7 +81,10 @@ namespace pacman_atari
                 case GlobalEnums.Direction.left:
                     colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
                     if (!CheckCollision())
+                    {
+                        spriteEffects = SpriteEffects.FlipHorizontally;
                         position.X -= speed;
+                    }
                     break;
             }
         }

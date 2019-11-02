@@ -35,6 +35,7 @@ namespace pacman_atari
         #region Initialize
         public static void Initialize()
         {
+            //Espelhado
             #region MapMatrix
             int[,] map = new int[41, 40]
             {

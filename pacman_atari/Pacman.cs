@@ -50,6 +50,8 @@ namespace pacman_atari
 
             walkAnimation = new Animation();
 
+            spriteEffects = SpriteEffects.None;
+
             score = 0;
         }
 
@@ -131,7 +133,7 @@ namespace pacman_atari
         {
             if (isAlive)
             {
-                walkAnimation.Draw(spriteBatch, center, true);
+                walkAnimation.Draw(spriteBatch, center, true, spriteEffects);
             }
         }
     }

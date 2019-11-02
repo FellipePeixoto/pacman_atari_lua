@@ -28,6 +28,8 @@ namespace pacman_atari
             dir = GlobalEnums.Direction.stopped;
             nextDir = GlobalEnums.Direction.stopped;
 
+            spriteEffects = SpriteEffects.None;
+
             animation = new Animation();
         }
 
@@ -56,7 +58,7 @@ namespace pacman_atari
         {
             if (isAlive)
             {
-                animation.Draw(spriteBatch, center, true);
+                animation.Draw(spriteBatch, center, true, spriteEffects);
             }
         }
     }

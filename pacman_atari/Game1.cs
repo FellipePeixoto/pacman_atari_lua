@@ -140,21 +140,26 @@ namespace pacman_atari
             try
             {
                 luaPacman["ghostsPursuing"] = ghostsPursuing;
+                luaPacman["position"] = Items.pacman.position;
                 luaPacman.DoFile("pacman.lua");
 
                 luaGhostGreen["pacmanPosition"] = Items.pacman.position;
+                luaGhostGreen["position"] = Items.ghostGreen.position;
                 luaGhostGreen["isAlive"] = Items.ghostGreen.IsAlive();
                 luaGhostGreen.DoFile("ghost-green.lua");
 
                 luaGhostLemonade["pacmanPosition"] = Items.pacman.position;
+                luaGhostLemonade["position"] = Items.ghostLemonade.position;
                 luaGhostLemonade["isAlive"] = Items.ghostLemonade.IsAlive();
                 luaGhostLemonade.DoFile("ghost-lemonade.lua");
 
                 luaGhostWhiteGreen["pacmanPosition"] = Items.pacman.position;
+                luaGhostWhiteGreen["position"] = Items.ghostWhiteGreen.position;
                 luaGhostWhiteGreen["isAlive"] = Items.ghostWhiteGreen.IsAlive();
                 luaGhostWhiteGreen.DoFile("ghost-white_green.lua");
 
                 luaGhostYellow["pacmanPosition"] = Items.pacman.position;
+                luaGhostYellow["position"] = Items.ghostYellow.position;
                 luaGhostYellow["isAlive"] = Items.ghostYellow.IsAlive();
                 luaGhostYellow.DoFile("ghost-yellow.lua");
             }

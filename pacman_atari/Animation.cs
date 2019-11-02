@@ -78,14 +78,14 @@ namespace pacman_atari
                 (int)(frameHeight * scale));
         }
 
-        public void Draw(SpriteBatch spriteBacth, Vector2 orign, bool walking)
+        public void Draw(SpriteBatch spriteBacth, Vector2 orign, bool walking, SpriteEffects spriteEffects)
         {
             if (isActive)
             {
                 if (!walking)
                     sourceRect = new Rectangle(0, 0, frameWidth, frameHeight);
 
-                spriteBacth.Draw(spriteTire, destinationRect, sourceRect, color, 0, orign, SpriteEffects.None, 0);
+                spriteBacth.Draw(spriteTire, destinationRect, sourceRect, color, 0, orign, spriteEffects, 0);
             }
         }
     }
