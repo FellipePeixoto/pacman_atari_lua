@@ -17,7 +17,6 @@ namespace pacman_atari
         public Vector2 position;
         protected Texture2D texture;
         protected Texture2D debugTexture;
-        protected Rectangle colliderDetection;
         protected Vector2 center;
         protected string debugTextureName;
         protected string textureName;

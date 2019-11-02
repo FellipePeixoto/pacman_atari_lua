@@ -75,19 +75,19 @@ namespace pacman_atari
             #region movement
             if (currentKeyBoardState.IsKeyDown(Keys.Up))
             {
-                    dir = GlobalEnums.Direction.up;
+                dir = GlobalEnums.Direction.up;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Down))
             {
-                    dir = GlobalEnums.Direction.down;
+                dir = GlobalEnums.Direction.down;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Right))
             {
-                    dir = GlobalEnums.Direction.right;
+                dir = GlobalEnums.Direction.right;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Left))
             {
-                    dir = GlobalEnums.Direction.left;
+                dir = GlobalEnums.Direction.left;
             }
             #endregion
 
