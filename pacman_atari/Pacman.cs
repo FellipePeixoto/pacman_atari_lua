@@ -75,26 +75,18 @@ namespace pacman_atari
             #region movement
             if (currentKeyBoardState.IsKeyDown(Keys.Up))
             {
-                colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
-                if (!CheckCollision())
                     dir = GlobalEnums.Direction.up;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Down))
             {
-                colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
-                if (!CheckCollision())
                     dir = GlobalEnums.Direction.down;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Right))
             {
-                colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
-                if (!CheckCollision())
                     dir = GlobalEnums.Direction.right;
             }
             else if (currentKeyBoardState.IsKeyDown(Keys.Left))
             {
-                colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
-                if (!CheckCollision())
                     dir = GlobalEnums.Direction.left;
             }
             #endregion

@@ -23,40 +23,34 @@ namespace pacman_atari
         {
             //if (directionSelected == 1)
             //{
-            //    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
-            //    if (!CheckCollision())
+            //    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance)))
             //        dir = GlobalEnums.Direction.up;
             //}
             //else if (directionSelected == 3)
             //{
-            //    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
-            //    if (!CheckCollision())
+            //    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance)))
             //        dir = GlobalEnums.Direction.down;
             //}
             //else if (directionSelected == 2)
             //{
-            //    colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
-            //    if (!CheckCollision())
+            //    if (!CheckCollision(new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size)))
             //        dir = GlobalEnums.Direction.right;
             //}
             //else if (directionSelected == 0)
             //{
-            //    colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
-            //    if (!CheckCollision())
+            //    if (!CheckCollision(new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size)))
             //        dir = GlobalEnums.Direction.left;
             //}
 
             switch (dir)
             {
                 case GlobalEnums.Direction.up:
-                    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance);
-                    if (!CheckCollision())
+                    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y - distance, size, distance)))
                         position.Y -= speed;
                     break;
 
                 case GlobalEnums.Direction.right:
-                    colliderDetection = new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size);
-                    if (!CheckCollision())
+                    if (!CheckCollision(new Rectangle((int)newPos.X + distance + size, (int)newPos.Y, distance, size)))
                     {
                         spriteEffects = SpriteEffects.None;
                         position.X += speed;
@@ -64,14 +58,12 @@ namespace pacman_atari
                     break;
 
                 case GlobalEnums.Direction.down:
-                    colliderDetection = new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance);
-                    if (!CheckCollision())
+                    if (!CheckCollision(new Rectangle((int)newPos.X, (int)newPos.Y + distance + size, size, distance)))
                         position.Y += speed;
                     break;
 
                 case GlobalEnums.Direction.left:
-                    colliderDetection = new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size);
-                    if (!CheckCollision())
+                    if (!CheckCollision(new Rectangle((int)newPos.X - distance, (int)newPos.Y, distance, size)))
                     {
                         spriteEffects = SpriteEffects.FlipHorizontally;
                         position.X -= speed;
@@ -84,11 +76,11 @@ namespace pacman_atari
         /// Checa a colisão contra objeto solido
         /// </summary>
         /// <returns></returns>
-        protected bool CheckCollision()
+        protected bool CheckCollision(Rectangle rectangle)
         {
             foreach (ObjectStatic i in Items.objMovList)
             {
-                if (i != null && colliderDetection.Intersects(i.rectangle) &&
+                if (i != null && rectangle.Intersects(i.rectangle) &&
                     (i.type == GlobalEnums.ObjectType.block || i.type == GlobalEnums.ObjectType.ghost))
                     return true;
             }
