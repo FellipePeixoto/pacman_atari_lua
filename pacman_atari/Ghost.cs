@@ -14,10 +14,12 @@ namespace pacman_atari
 {
     class Ghost : Moveable
     {
+        private Vector2 diff = new Vector2(15, 15);
         private Animation animation;
 
         public Ghost(Vector2 position, float speed, String textureName)
         {
+            this.isGhost = true;
             this.position = position;
             this.speed = speed;
             this.textureName = textureName;
@@ -46,6 +48,8 @@ namespace pacman_atari
         {
             if (!isAlive)
                 return;
+
+            newPos = position - diff;
 
             Move();
 

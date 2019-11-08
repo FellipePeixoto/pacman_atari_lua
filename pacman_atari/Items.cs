@@ -1,13 +1,7 @@
 ﻿#region using
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace pacman_atari
@@ -18,18 +12,15 @@ namespace pacman_atari
         public static List<Object> objList = new List<Object>();
 
         public static Pacman pacman;
-
         public static Ghost ghostGreen;
-
         public static Ghost ghostLemonade;
-
         public static Ghost ghostWhiteGreen;
-
         public static Ghost ghostYellow;
         #endregion
 
         #region Objetos estaticos no cenario
         public static List<ObjectStatic> objMovList = new List<ObjectStatic>();
+        public static List<ObjectStatic> dotsAndPills = new List<ObjectStatic>();
         #endregion
 
         #region Initialize
@@ -59,7 +50,7 @@ namespace pacman_atari
                 {1,1,0,0,2,0,0,0,2,0,0,0,2,0,0,0,1,1,0,0,2,0,0,0,2,0,0,0,2,0,0,0,2,0,0,0,2,0,0,0},
                 {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                 {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1},
+                {1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,0,0},
                 {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,5,0},
                 {1,1,0,0,2,0,0,0,2,0,0,0,2,0,0,0,2,0,0,0,2,0,0,0,2,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0},
                 {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0},
@@ -114,29 +105,40 @@ namespace pacman_atari
                                     Color.White));
                             break;
                         case 2:
-                            objMovList.Add(
-                                new Dot(
+                            ObjectStatic dotLeft = new Dot(
                                     new Vector2(i * blockSize, (j * blockSize) + dotOffSet),
                                     "block_tile",
-                                    Color.White));
-                            objMovList.Add(
-                                new Dot(
+                                    Color.White);
+
+                            objMovList.Add(dotLeft);
+                            dotsAndPills.Add(dotLeft);
+
+                            ObjectStatic dotRight = new Dot(
                                     new Vector2((mapSize) - (i * blockSize), (j * blockSize) + dotOffSet),
                                     "block_tile",
-                                    Color.White));
+                                    Color.White);
+
+                            objMovList.Add(dotRight);
+                            dotsAndPills.Add(dotRight);
                             break;
 
                         case 3:
-                            objMovList.Add(
-                                new Pill(
+                            ObjectStatic pillLeft = new Pill(
                                     new Vector2(i * blockSize, (j * blockSize) + pillOffSet),
                                     "pill_tile",
-                                    Color.White));
-                            objMovList.Add(
+                                    Color.White);
+
+                            dotsAndPills.Add(pillLeft);
+                            objMovList.Add(pillLeft);
+
+                            ObjectStatic pillRight =
                                 new Pill(
                                     new Vector2((mapSize) - (i * blockSize) - blockSize, (j * blockSize) + pillOffSet),
                                     "pill_tile",
-                                    Color.White));
+                                    Color.White);
+
+                            dotsAndPills.Add(pillRight);
+                            objMovList.Add(pillRight);
                             break;
 
                         case 4:
@@ -175,5 +177,18 @@ namespace pacman_atari
             #endregion
         }
         #endregion
+
+        public static void PopPillorDot(ObjectStatic target)
+        {
+            dotsAndPills.Remove(target);
+            objMovList.Remove(target);
+            checkEndGame();
+        }
+
+        public static void checkEndGame()
+        {
+            if (dotsAndPills.Count == 0)
+                Game1.isRunning = false;
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace pacman_atari
         protected float scale;
         protected float speed;
         protected bool isAlive;
+        protected bool isGhost;
 
         #region XNA framework methods
         public virtual void LoadContent(ContentManager content)

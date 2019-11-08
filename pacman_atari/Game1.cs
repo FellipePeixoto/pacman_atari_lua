@@ -21,6 +21,7 @@ namespace pacman_atari
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Game1 instance;
+        public static bool isRunning = true;
 
         private Vector2 scoreShow;
         public int ghostsPursuing;
@@ -137,27 +138,39 @@ namespace pacman_atari
         {
             // TODO: Add your update logic here
 
+            if (!isRunning)
+            {
+
+                return;
+            }
+
             try
             {
+
+                luaPacman["gameTime"] = gameTime.ElapsedGameTime.Milliseconds / 1000f;
                 luaPacman["ghostsPursuing"] = ghostsPursuing;
                 luaPacman["position"] = Items.pacman.position;
                 luaPacman.DoFile("pacman.lua");
 
+                luaGhostGreen["gameTime"] = gameTime.ElapsedGameTime.Milliseconds / 1000f;
                 luaGhostGreen["pacmanPosition"] = Items.pacman.position;
                 luaGhostGreen["position"] = Items.ghostGreen.position;
                 luaGhostGreen["isAlive"] = Items.ghostGreen.IsAlive();
                 luaGhostGreen.DoFile("ghost-green.lua");
 
+                luaGhostLemonade["gameTime"] = gameTime.ElapsedGameTime.Milliseconds / 1000f;
                 luaGhostLemonade["pacmanPosition"] = Items.pacman.position;
                 luaGhostLemonade["position"] = Items.ghostLemonade.position;
                 luaGhostLemonade["isAlive"] = Items.ghostLemonade.IsAlive();
                 luaGhostLemonade.DoFile("ghost-lemonade.lua");
 
+                luaGhostWhiteGreen["gameTime"] = gameTime.ElapsedGameTime.Milliseconds / 1000f;
                 luaGhostWhiteGreen["pacmanPosition"] = Items.pacman.position;
                 luaGhostWhiteGreen["position"] = Items.ghostWhiteGreen.position;
                 luaGhostWhiteGreen["isAlive"] = Items.ghostWhiteGreen.IsAlive();
                 luaGhostWhiteGreen.DoFile("ghost-white_green.lua");
 
+                luaGhostYellow["gameTime"] = gameTime.ElapsedGameTime.Milliseconds / 1000f;
                 luaGhostYellow["pacmanPosition"] = Items.pacman.position;
                 luaGhostYellow["position"] = Items.ghostYellow.position;
                 luaGhostYellow["isAlive"] = Items.ghostYellow.IsAlive();

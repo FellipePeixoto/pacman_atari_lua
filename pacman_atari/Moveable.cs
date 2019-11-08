@@ -1,11 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using pacman_atari;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pacman_atari
 {
@@ -93,16 +87,19 @@ namespace pacman_atari
         /// <returns>Verdadeiro caso o há colisão</returns>
         protected bool CheckCollision(GlobalEnums.ObjectType type, bool destroy)
         {
-            foreach (ObjectStatic i in Items.objMovList)
+            for (int i = 0; i < Items.objMovList.Count; i++)
             {
-                if (i != null && collider.Intersects(i.rectangle) &&
-                    (i.type == type))
+                if (Items.objMovList[i] != null && collider.Intersects(Items.objMovList[i].rectangle) &&
+                    (Items.objMovList[i].type == type))
                 {
                     if (destroy)
-                        Items.objMovList[Items.objMovList.IndexOf(i)] = null;
+                    {
+                        Items.PopPillorDot(Items.objMovList[i]);
+                    }
                     return true;
                 }
             }
+
             return false;
         }
 
