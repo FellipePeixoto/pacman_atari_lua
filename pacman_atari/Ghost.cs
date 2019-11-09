@@ -49,6 +49,8 @@ namespace pacman_atari
             if (!isAlive)
                 return;
 
+            CheckCollisionWithPacman();
+
             newPos = position - diff;
 
             Move();
@@ -64,6 +66,17 @@ namespace pacman_atari
             if (isAlive)
             {
                 animation.Draw(spriteBatch, center, true, spriteEffects);
+            }
+        }
+
+        public void CheckCollisionWithPacman()
+        {
+            Rectangle pacman = new Rectangle((int)Items.pacman.position.X, (int)Items.pacman.position.Y, size, size);
+            Rectangle ghost = new Rectangle((int)position.X,(int)position.Y,size,size);
+
+            if (ghost.Intersects(pacman))
+            {
+                Game1.isRunning = false;
             }
         }
     }

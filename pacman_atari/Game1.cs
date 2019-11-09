@@ -23,6 +23,8 @@ namespace pacman_atari
         public static Game1 instance;
         public static bool isRunning = true;
 
+        float delay = 5000;
+
         private Vector2 scoreShow;
         public int ghostsPursuing;
 
