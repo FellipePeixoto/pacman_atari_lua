@@ -117,5 +117,15 @@ namespace pacman_atari
                 walkAnimation.Draw(spriteBatch, center, true, spriteEffects);
             }
         }
+
+        public Vector2 GetRandomCollect()
+        {
+            ObjectStatic selected = Items.dotsAndPills[new Random().Next(0, Items.dotsAndPills.Count)];
+
+            if (selected != null)
+                return selected.position;
+
+            return new Vector2(-1, -1);
+        }
     }
 }

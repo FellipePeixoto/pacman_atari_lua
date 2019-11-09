@@ -74,6 +74,7 @@ namespace pacman_atari
             luaPacman.RegisterFunction("Up", Items.pacman, Items.pacman.GetType().GetMethod("Up"));
             luaPacman.RegisterFunction("Right", Items.pacman, Items.pacman.GetType().GetMethod("Right"));
             luaPacman.RegisterFunction("Down", Items.pacman, Items.pacman.GetType().GetMethod("Down"));
+            luaPacman.RegisterFunction("GetRandom", Items.pacman, Items.pacman.GetType().GetMethod("GetRandomCollect"));
 
             luaGhostGreen.RegisterFunction("Left", Items.ghostGreen, Items.ghostGreen.GetType().GetMethod("Left"));
             luaGhostGreen.RegisterFunction("Up", Items.ghostGreen, Items.ghostGreen.GetType().GetMethod("Up"));
@@ -152,6 +153,10 @@ namespace pacman_atari
                 luaPacman["gameTime"] = gameTime.ElapsedGameTime.Milliseconds / 1000f;
                 luaPacman["ghostsPursuing"] = ghostsPursuing;
                 luaPacman["position"] = Items.pacman.position;
+                luaPacman["ghostGreenPosition"] = Items.ghostGreen.position;
+                luaPacman["ghostLemonadePosition"] = Items.ghostLemonade.position;
+                luaPacman["ghostWhiteGreenPosition"] = Items.ghostWhiteGreen.position;
+                luaPacman["ghostYellowPosition"] = Items.ghostYellow.position;
                 luaPacman.DoFile("pacman.lua");
 
                 luaGhostGreen["gameTime"] = gameTime.ElapsedGameTime.Milliseconds / 1000f;
